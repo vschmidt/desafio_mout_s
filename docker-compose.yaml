@@ -62,7 +62,6 @@ services:
         entrypoint: >
             /bin/sh -c "
             /usr/bin/mc config host add miniohost http://minios3:9000 minio oinim123;
-            /usr/bin/mc rm -r --force miniohost/notifications;
             /usr/bin/mc mb miniohost/notifications;
             /usr/bin/mc policy download miniohost/notifications;
             exit 0;
