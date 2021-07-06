@@ -10,8 +10,21 @@ from minio import Minio
 
 
 class IndexHandler(tornado.web.RequestHandler):
+    def initialize(self, minio_client):
+        self.minio_client = minio_client
+
+    def set_default_headers(self):
+        self.set_header("Content-Type", "application/json")
+
     def get(self):
-        self.write(f"Find")
+        id = self.get_argument("id", None)
+
+        if id:
+            response = self.minio_client.get_file(id)
+            self.write(response)
+        else:
+            response = json.dumps({"message": "Not found"})
+            self.write(response)
 
 
 class PikaClient:
@@ -113,3 +126,21 @@ class MinioS3Client:
         print(
             "created {0} object; etag: {1}".format(result.object_name, result.etag),
         )
+
+    def get_file(self, id):
+        # Get filename
+        filename = str(id) + ".json"
+
+        response = None
+        try:
+            response = self.client.get_object("notifications", filename)
+            # Read data from response.
+            response_data = response.read()
+        except:
+            response_data = json.dumps({"message": "Not found"})
+        finally:
+            if response:
+                response.close()
+                response.release_conn()
+
+        return response_data

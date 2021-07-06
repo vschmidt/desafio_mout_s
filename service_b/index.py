@@ -4,16 +4,10 @@ import time
 import pika
 from handlers import IndexHandler, PikaClient, MinioS3Client
 
-HANDLERS = [(r"/", IndexHandler)]
 settings = {
     "debug": True,
 }
 port = 8889
-
-app = tornado.web.Application(
-    HANDLERS,
-    **settings,
-)
 
 
 def check_rabit():
@@ -33,7 +27,15 @@ def check_rabit():
 
 def main():
     io_loop = tornado.ioloop.IOLoop.instance()
+
     minio_client = MinioS3Client()
+
+    HANDLERS = [(r"/", IndexHandler, {"minio_client": minio_client})]
+
+    app = tornado.web.Application(
+        HANDLERS,
+        **settings,
+    )
     app.pc = PikaClient(io_loop, minio_client)
     app.pc.connect()
     app.listen(port)
