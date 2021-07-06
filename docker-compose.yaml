@@ -9,7 +9,7 @@ services:
         ports: 
             - 8888:8888
         env_file: 
-            - config/service_a.env
+            - config/dev/service_a.env
         volumes:
             - .:/code
         depends_on: 
@@ -23,7 +23,7 @@ services:
         ports: 
             - 8889:8889
         env_file: 
-            - config/service_b.env
+            - config/dev/service_b.env
         volumes:
             - .:/code
         depends_on: 
