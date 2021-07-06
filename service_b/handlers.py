@@ -15,6 +15,18 @@ class IndexHandler(tornado.web.RequestHandler):
 
     def set_default_headers(self):
         self.set_header("Content-Type", "application/json")
+        self.set_header("access-control-allow-origin", "*")
+        self.set_header("Access-Control-Allow-Headers", "*")
+        self.set_header("Access-Control-Allow-Methods", "GET")
+        # HEADERS!
+        self.set_header(
+            "Access-Control-Allow-Headers",
+            "access-control-allow-origin,authorization,content-type",
+        )
+
+    def options(self):
+        self.set_status(204)
+        self.finish()
 
     def get(self):
         id = self.get_argument("id", None)
