@@ -1,4 +1,10 @@
+apispec==4.7.0
+apispec-webframeworks==0.5.2
+Jinja2==3.0.1
+MarkupSafe==2.0.1
+marshmallow==3.12.1
 pika==1.2.0
 PyYAML==5.4
+swagger-ui-py==0.3.0
 tornado==6.1
 tornado-swagger==1.2.10

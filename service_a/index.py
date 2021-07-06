@@ -4,10 +4,31 @@ import json
 import time
 import os
 import pika
+import swagger_ui
+from init_swagger import generate_swagger_file
+
+SWAGGER_API_OUTPUT_FILE = "./swagger_service_a.json"
 
 
 class IndexHandler(tornado.web.RequestHandler):
+    """
+    IndexHandler
+    """
+
     def get(self):
+        """Return index page
+        ---
+        tags: [index]
+        summary: Return index page
+        description: Index page is UI interface with users
+        responses:
+            200:
+                description: Index page
+                content:
+                    application/html:
+                        schema:
+                            type: array
+        """
         self.render("pages/index.html", title="Send interface")
 
     def post(self):
@@ -98,13 +119,29 @@ def make_app():
         "debug": DEV_MODE,
     }
 
-    return tornado.web.Application(
-        [
-            (r"/", IndexHandler),
-            (r"/search", SearchHandler),
-        ],
+    HANDLERS = [
+        (r"/", IndexHandler),
+        (r"/search", SearchHandler),
+    ]
+
+    app = tornado.web.Application(
+        HANDLERS,
         **settings,
     )
+
+    # Generate a fresh Swagger file
+    generate_swagger_file(handlers=HANDLERS, file_location=SWAGGER_API_OUTPUT_FILE)
+
+    # Start the Swagger UI. Automatically generated swagger.json can also
+    # be served using a separate Swagger-service.
+    swagger_ui.tornado_api_doc(
+        app,
+        config_path=SWAGGER_API_OUTPUT_FILE,
+        url_prefix="/swagger/spec.html",
+        title="Car Brand API",
+    )
+
+    return app
 
 
 if __name__ == "__main__":

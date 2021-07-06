@@ -1,0 +1,37 @@
+{
+    "info": {
+        "description": "Documentation for the Service A API",
+        "title": "Service A API",
+        "version": "0.0.1"
+    },
+    "servers": [
+        {
+            "url": "http://127.0.0.1:8888/",
+            "description": "Ambiente do sistema"
+        }
+    ],
+    "paths": {
+        "/": {
+            "get": {
+                "tags": [
+                    "index"
+                ],
+                "summary": "Return index page",
+                "description": "Index page is UI interface with users",
+                "responses": {
+                    "200": {
+                        "description": "Index page",
+                        "content": {
+                            "application/html": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    },
+    "openapi": "3.0.2"
+}
