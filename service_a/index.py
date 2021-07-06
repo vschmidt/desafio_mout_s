@@ -7,7 +7,7 @@ import pika
 import swagger_ui
 from init_swagger import generate_swagger_file
 
-SWAGGER_API_OUTPUT_FILE = "./swagger_service_a.json"
+SWAGGER_API_OUTPUT_FILE = "./docs/swagger_service_a.json"
 
 
 class IndexHandler(tornado.web.RequestHandler):

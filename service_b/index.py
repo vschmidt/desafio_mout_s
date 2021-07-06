@@ -7,7 +7,7 @@ from handlers import IndexHandler, PikaClient, MinioS3Client
 import swagger_ui
 from init_swagger import generate_swagger_file
 
-SWAGGER_API_OUTPUT_FILE = "./swagger_service_b.json"
+SWAGGER_API_OUTPUT_FILE = "./docs/swagger_service_b.json"
 
 
 def check_rabit():
