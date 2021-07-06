@@ -30,6 +30,19 @@ class IndexHandler(tornado.web.RequestHandler):
         self.finish()
 
     def get(self):
+        """Return notification in MinioS3
+        ---
+        tags: [minios3]
+        summary: Return the id and notification
+        description: Return the id and notification
+        responses:
+            200:
+                description: Index page
+                content:
+                    application/html:
+                        schema:
+                            type: array
+        """
         id = self.get_argument("id", None)
 
         if id:
