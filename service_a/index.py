@@ -70,11 +70,18 @@ def check_rabit():
     """
     Check if RabitMQ is ready
     """
+    # Get rabbitmq env variables
+    RABBITMQ_USER = os.getenv("RABBITMQ_USER", None)
+    RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", None)
+    RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", None)
+    RABBITMQ_PORT = os.getenv("RABBITMQ_PORT", None)
+    RABBITMQ_VHOST = os.getenv("RABBITMQ_VHOST", None)
+
     while True:
         try:
-            credentials = pika.PlainCredentials("admin", "nimda")
+            credentials = pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)
             parameters = pika.ConnectionParameters(
-                "rabbitmq", 5672, "notifications-vhost", credentials
+                RABBITMQ_HOST, RABBITMQ_PORT, RABBITMQ_VHOST, credentials
             )
             connection = pika.BlockingConnection(parameters)
             connection.close()
@@ -85,8 +92,10 @@ def check_rabit():
 
 
 def make_app():
+    DEV_MODE = os.getenv("DEV_MODE", None)
+
     settings = {
-        "debug": True,
+        "debug": DEV_MODE,
     }
 
     return tornado.web.Application(
@@ -99,8 +108,9 @@ def make_app():
 
 
 if __name__ == "__main__":
+    SERVICE_PORT = os.getenv("SERVICE_PORT", None)
     check_rabit()
     app = make_app()
-    app.listen(8888)
-    print("Service A running in: 8888")
+    app.listen(SERVICE_PORT)
+    print(f"Service A running in: {SERVICE_PORT}")
     tornado.ioloop.IOLoop.current().start()
