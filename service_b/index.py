@@ -2,20 +2,26 @@
 import tornado.web
 import time
 import pika
+import os
 from handlers import IndexHandler, PikaClient, MinioS3Client
-
-settings = {
-    "debug": True,
-}
-port = 8889
 
 
 def check_rabit():
+    """
+    Check if RabitMQ is ready
+    """
+    # Get rabbitmq env variables
+    RABBITMQ_USER = os.getenv("RABBITMQ_USER", None)
+    RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", None)
+    RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", None)
+    RABBITMQ_PORT = os.getenv("RABBITMQ_PORT", None)
+    RABBITMQ_VHOST = os.getenv("RABBITMQ_VHOST", None)
+
     while True:
         try:
-            credentials = pika.PlainCredentials("admin", "nimda")
+            credentials = pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)
             parameters = pika.ConnectionParameters(
-                "rabbitmq", 5672, "notifications-vhost", credentials
+                RABBITMQ_HOST, RABBITMQ_PORT, RABBITMQ_VHOST, credentials
             )
             connection = pika.BlockingConnection(parameters)
             connection.close()
@@ -26,6 +32,14 @@ def check_rabit():
 
 
 def main():
+    # get env variables
+    DEV_MODE = os.getenv("DEV_MODE", False)
+    SERVICE_PORT = os.getenv("SERVICE_PORT", False)
+
+    settings = {
+        "debug": DEV_MODE,
+    }
+
     io_loop = tornado.ioloop.IOLoop.instance()
 
     minio_client = MinioS3Client()
@@ -38,14 +52,14 @@ def main():
     )
     app.pc = PikaClient(io_loop, minio_client)
     app.pc.connect()
-    app.listen(port)
+    app.listen(SERVICE_PORT)
 
     try:
         io_loop.start()
     except KeyboardInterrupt:
         io_loop.stop()
 
-    print("listen {}".format(port))
+    print("listen {}".format(SERVICE_PORT))
 
 
 if __name__ == "__main__":
