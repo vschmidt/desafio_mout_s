@@ -24,7 +24,7 @@
 
       headers.append('Content-Type', 'application/json');
 
-      fetch(`http://127.0.0.1:8889/?id=${id}`, {
+      fetch(`http://{{serviceb_host}}:{{serviceb_port}}/?id=${id}`, {
         method: 'GET',
         headers: headers
       })

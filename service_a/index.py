@@ -15,27 +15,37 @@ class IndexHandler(tornado.web.RequestHandler):
         notification = self.get_argument("notification", None)  # Get notification
         payload = {"id": id, "notification": notification}  # Create payload
 
-        credentials = pika.PlainCredentials("admin", "nimda")
+        # Get rabbitmq env variables
+        RABBITMQ_USER = os.getenv("RABBITMQ_USER", None)
+        RABBITMQ_PASSWORD = os.getenv("RABBITMQ_PASSWORD", None)
+        RABBITMQ_HOST = os.getenv("RABBITMQ_HOST", None)
+        RABBITMQ_PORT = os.getenv("RABBITMQ_PORT", None)
+        RABBITMQ_VHOST = os.getenv("RABBITMQ_VHOST", None)
+        RABBITMQ_QUEUE = os.getenv("RABBITMQ_QUEUE", None)
+        RABBITMQ_EXCHANGE = os.getenv("RABBITMQ_EXCHANGE", None)
+
+        # Create connection
+        credentials = pika.PlainCredentials(RABBITMQ_USER, RABBITMQ_PASSWORD)
         parameters = pika.ConnectionParameters(
-            "rabbitmq", 5672, "notifications-vhost", credentials
+            RABBITMQ_HOST, RABBITMQ_PORT, RABBITMQ_VHOST, credentials
         )
         connection = pika.BlockingConnection(parameters)
 
         channel = connection.channel()  # Open channel
         channel.queue_declare(
-            queue="notifications-queue",
+            queue=RABBITMQ_QUEUE,
             durable=True,
             auto_delete=False,
             arguments={"x-max-length": 5, "x-queue-type": "classic"},
         )
 
         channel.basic_publish(
-            exchange="notifications-exchange",
+            exchange=RABBITMQ_EXCHANGE,
             routing_key="notifications",
             body=json.dumps(payload),
         )  # Publish message
 
-        connection.close()
+        connection.close()  # Close connection
 
         self.render(
             "pages/success.html", title="Success page", notification=notification
@@ -44,7 +54,16 @@ class IndexHandler(tornado.web.RequestHandler):
 
 class SearchHandler(tornado.web.RequestHandler):
     def get(self):
-        self.render("pages/search.html", title="Search interface")
+        # Get env variables
+        SERVICEB_HOST = os.getenv("SERVICEB_HOST", None)
+        SERVICEB_PORT = os.getenv("SERVICEB_PORT", None)
+
+        self.render(
+            "pages/search.html",
+            title="Search interface",
+            serviceb_host=SERVICEB_HOST,
+            serviceb_port=SERVICEB_PORT,
+        )
 
 
 def check_rabit():
