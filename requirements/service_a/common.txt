@@ -1,2 +1,4 @@
-tornado==6.1
 pika==1.2.0
+PyYAML==5.4
+tornado==6.1
+tornado-swagger==1.2.10
