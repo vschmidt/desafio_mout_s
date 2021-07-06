@@ -3,7 +3,8 @@ import tornado.web
 import time
 import pika
 import os
-from handlers import IndexHandler, PikaClient, MinioS3Client
+from handlers import IndexHandler
+from clients import PikaClient, MinioS3Client
 import swagger_ui
 from init_swagger import generate_swagger_file
 
