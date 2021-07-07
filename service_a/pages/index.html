@@ -1,12 +1,26 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h1>Index page</h1>
-<form action="/" method="post">
-  ID:
-  <input type="text" name="id" id="id"><br>
-  Notification:
-  <input type="text" name="notification" id="notification"><br>
-  <button type="submit">Enviar</button>
-</form>
+<div class="vh-100 d-flex justify-content-center align-items-center bg-dark text-white bg-gradient">
+
+  <div class="row ">
+    <h1>Index page</h1>
+    <form action="/" method="post">
+      <div class="mb-3">
+        <label for="id" class="form-label">ID</label>
+        <input required type="number" class="form-control" id="id" name="id" placeholder="Integer id">
+      </div>
+      <div class="mb-3">
+        <label for="id" class="form-label">Notification</label>
+        <input required type="text" class="form-control" id="notification" name="notification"
+          placeholder="Notification message">
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="submit">Send</button>
+        <a class="btn btn-secondary" href="/search">Find by ID</a>
+      </div>
+    </form>
+  </div>
+</div>
+
 {% end %}

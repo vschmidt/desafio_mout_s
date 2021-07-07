@@ -1,14 +1,26 @@
 {% extends "base.html" %}
 
 {% block body %}
+<div class="vh-100 d-flex justify-content-center align-items-center bg-dark text-white bg-gradient">
 
-<body>
-  <h1>Index page</h1>
-  Notification send!
-  <br>
-  Message is:
-  {{ notification }}
-  <br>
-  <a href="/search">Find notifications</a>
-  <a href="/">Send another</a>
-  {%end%}
+  <div class="row ">
+    <h1>Success page</h1>
+    <form>
+
+      <p>
+      Notification send!
+    </p>
+    <p>
+      Notification content:
+      {{ notification }}
+    </p>
+
+      <div class="d-grid gap-2">
+        <a class="btn btn-secondary" href="/search">Find notifications</a>
+        <a class="btn btn-secondary" href="/">Add another</a>
+      </div>
+    </form>
+  </div>
+</div>
+
+{%end%}

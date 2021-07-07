@@ -1,18 +1,29 @@
 {% extends "base.html" %}
 
 {% block body %}
-<h1>Search page</h1><br>
-<form onsubmit="event.preventDefault()">
-  ID:
-  <input type="text" name="id" id="id"><br>
-  <h1 id="message"></h1>
-  <button id="find_button" type="button">Enviar</button>
-</form>
+<div class="vh-100 d-flex justify-content-center align-items-center bg-dark text-white bg-gradient">
+
+  <div class="row ">
+    <h1>Search page</h1>
+    <form onsubmit="event.preventDefault()">
+      <div class="mb-3">
+        <label for="id" class="form-label">ID</label>
+        <input required type="number" class="form-control" id="id" name="id" placeholder="ID of notification">
+      </div>
+      <div class="d-grid gap-2">
+        <button class="btn btn-primary" type="button" id="find_button">Find</button>
+        <a class="btn btn-secondary" href="/">Add another</a>
+      </div>
+      <h2 id="message"></h2>
+    </form>
+  </div>
+</div>
+
 
 <script>
   function clickFunction(event) {
     let headers = new Headers();
-    let id = document.getElementById("id").value  
+    let id = document.getElementById("id").value
 
     headers.append('Content-Type', 'application/json');
 
