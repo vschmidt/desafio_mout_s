@@ -1,19 +1,14 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }}</title>
-</head>
+{% extends "base.html" %}
+
+{% block body %}
+
 <body>
   <h1>Index page</h1>
-  Notification send! 
+  Notification send!
   <br>
   Message is:
   {{ notification }}
   <br>
   <a href="/search">Find notifications</a>
   <a href="/">Send another</a>
-</body>
-</html>
+  {%end%}

@@ -1,40 +1,30 @@
-<!DOCTYPE html>
-<html lang="en">
+{% extends "base.html" %}
 
-<head>
-  <meta charset="UTF-8">
-  <meta http-equiv="X-UA-Compatible" content="IE=edge">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>{{ title }}</title>
-</head>
+{% block body %}
+<h1>Search page</h1><br>
+<form onsubmit="event.preventDefault()">
+  ID:
+  <input type="text" name="id" id="id"><br>
+  <h1 id="message"></h1>
+  <button id="find_button" type="button">Enviar</button>
+</form>
 
-<body>
-  <h1>Search page</h1><br>
-  <form onsubmit="event.preventDefault()">
-    ID:
-    <input type="text" name="id" id="id"><br>
-    <h1 id="message"></h1>
-    <button id="find_button" type="button">Enviar</button>
-  </form>
+<script>
+  function clickFunction(event) {
+    let headers = new Headers();
+    let id = document.getElementById("id").value  
 
-  <script>
-    function clickFunction(event) {
-      let headers = new Headers();
-      let id = document.getElementById("id").value
+    headers.append('Content-Type', 'application/json');
 
-      headers.append('Content-Type', 'application/json');
+    fetch(`http://{{serviceb_host}}:{{serviceb_port}}/?id=${id}`, {
+      method: 'GET',
+      headers: headers
+    })
+      .then(response => response.json())
+      .then(response => document.getElementById("message").textContent = response["notification"])
+  }
 
-      fetch(`http://{{serviceb_host}}:{{serviceb_port}}/?id=${id}`, {
-        method: 'GET',
-        headers: headers
-      })
-        .then(response => response.json())
-        .then(response => document.getElementById("message").textContent = response["notification"])
-    }
-
-    buttonEl = document.getElementById("find_button")
-    buttonEl.onclick = clickFunction;
-  </script>
-</body>
-
-</html>
+  buttonEl = document.getElementById("find_button")
+  buttonEl.onclick = clickFunction;
+</script>
+{% end %}
