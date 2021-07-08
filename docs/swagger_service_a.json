@@ -30,6 +30,46 @@
                         }
                     }
                 }
+            },
+            "post": {
+                "tags": [
+                    "index"
+                ],
+                "summary": "Send payload to service B and return success page",
+                "description": "Send payload to service B and return success page",
+                "responses": {
+                    "200": {
+                        "description": "Success page",
+                        "content": {
+                            "application/html": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        },
+        "/search": {
+            "get": {
+                "tags": [
+                    "search"
+                ],
+                "summary": "Return search page",
+                "description": "Return search page",
+                "responses": {
+                    "200": {
+                        "description": "Success page",
+                        "content": {
+                            "application/html": {
+                                "schema": {
+                                    "type": "array"
+                                }
+                            }
+                        }
+                    }
+                }
             }
         }
     },

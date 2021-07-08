@@ -26,6 +26,19 @@ class IndexHandler(tornado.web.RequestHandler):
         self.render("pages/index.html", title="Send interface")
 
     def post(self):
+        """Return success page
+        ---
+        tags: [index]
+        summary: Send payload to service B and return success page
+        description: Send payload to service B and return success page
+        responses:
+            200:
+                description: Success page
+                content:
+                    application/html:
+                        schema:
+                            type: array
+        """
         id = self.get_argument("id", None)  # Get id
         notification = self.get_argument("notification", None)  # Get notification
         payload = {"id": id, "notification": notification}  # Create payload
@@ -69,6 +82,19 @@ class IndexHandler(tornado.web.RequestHandler):
 
 class SearchHandler(tornado.web.RequestHandler):
     def get(self):
+        """Return search page
+        ---
+        tags: [search]
+        summary: Return search page
+        description: Return search page
+        responses:
+            200:
+                description: Success page
+                content:
+                    application/html:
+                        schema:
+                            type: array
+        """
         # Get env variables
         SERVICEB_HOST = os.getenv("SERVICEB_HOST", None)
         SERVICEB_PORT = os.getenv("SERVICEB_PORT", None)
